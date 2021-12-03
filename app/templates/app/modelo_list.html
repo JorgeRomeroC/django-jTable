@@ -1,0 +1,26 @@
+{% extends 'bases/index.html' %}
+
+{% block content %}
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Código</th>
+        <th scope="col">Descripción</th>
+        <th scope="col">Acción</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for item in obj %}
+      <tr>
+          <td>{{item.id}}</td>
+          <td>{{item.codigo}}</td>
+          <td>{{item.descripcion}}</td>
+          <td>
+            <a href="{% url 'app:edit' item.id %}" class="btn btn-block btn-info">Editar</a>
+          </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock%}
