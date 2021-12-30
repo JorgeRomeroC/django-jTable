@@ -9,14 +9,14 @@
 
 ## ☷ Cursos ofrecidos con su Descuento:
 
-☞ Sistema de Compra y Facturación con Django LTS
-☞ Elabora RestAPI con Django Rest FrameWork
-☞ Domina el ORM de Django
-☞ Desarrollo Web con Python usando Django (Para Principiantes)
-☞ Replicación de Datos con SymmetricDS
-☞ Experto FrontEnd con VUE y BackEnd con Django 
-☞ Desarrolla Aplicaciones en Capa con ADO NET
-☞ Entity FrameWork para principiantes
+- ☞ Sistema de Compra y Facturación con Django LTS
+- ☞ Elabora RestAPI con Django Rest FrameWork
+- ☞ Domina el ORM de Django
+- ☞ Desarrollo Web con Python usando Django (Para Principiantes)
+- ☞ Replicación de Datos con SymmetricDS
+- ☞ Experto FrontEnd con VUE y BackEnd con Django 
+- ☞ Desarrolla Aplicaciones en Capa con ADO NET
+- ☞ Entity FrameWork para principiantes
 
 ##  [Más Cursos y Descuentos al precio oficial de Udemy](https://mailchi.mp/1fc9a9e05a5c/debs-8-cursos-oficial) 
 
