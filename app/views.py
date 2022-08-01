@@ -40,3 +40,7 @@ class ModeloDel(generic.DeleteView):
     context_object_name='obj'
     success_url=reverse_lazy("app:modelo_list")
     success_message="Modelo Eliminado Satisfactoriamente"
+
+
+class Crud(generic.TemplateView):
+    template_name = "app/crud.html"
