@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'dj_deploy.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dj_deploy',
+        'NAME': 'table_html_dj_db',
         'USER': 'postgres',
         'PASSWORD': '123456',
         'HOST': '127.0.0.1',
