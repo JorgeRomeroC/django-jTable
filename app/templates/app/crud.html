@@ -48,6 +48,16 @@
     var desc   = $("#descripcion").val();
     var html = `<tr><td></td><td>${codigo}</td><td>${desc}</td><td></td></tr>`
     // console.log(html)
+    if(codigo==""){
+      alert("Código Requerido")
+      $("#codigo").focus()
+      return
+    }
+    if(desc==""){
+      alert("Descripción Requerida")
+      $("#descripcion").focus()
+      return
+    }
     $("table tbody").append(html)
   })
 
