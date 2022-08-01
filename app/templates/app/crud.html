@@ -1,16 +1,39 @@
 {% extends 'bases/index.html' %}
 
 {% block content %}
-<table class="table table-hover">
-    <thead>
-      <tr>
-        <th scope="col">Id</th>
-        <th scope="col">Código</th>
-        <th scope="col">Descripción</th>
-        <th scope="col">Acción</th>
-      </tr>
-    </thead>
-    <tbody>
-    </tbody>
-  </table>
+<div class="container">
+  <div class="row">
+    <div class="col-6">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Código</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>    
+    </div>
+    <div class="col-6">
+      <div class="row">
+        <div class="col-6">
+          <input type="text" id="codigo" class="form-control" placeholder="Código">
+        </div>
+        <div class="col-6">
+          <input type="text" id="descripcion" class="form-control" placeholder="Descripción">
+        </div>
+      </div>
+      <hr class="mt-3 mb-3"/>
+      <div class="row">
+        <div class="col">
+          <button type="button" id="add-row" class="btn btn-warning">Agregar</button>
+          <button type="button" class="btn btn-info">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock%}
