@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render,HttpResponse
 from django.views import generic
 from django.urls import reverse_lazy
@@ -64,3 +65,10 @@ def update1(request):
 
         return HttpResponse("OK")
     return HttpResponse("Método No Permitido")
+
+
+def reload(request):
+    context = {}
+    registros = Modelo.objects.all()
+    context["datos"] = list(registros.values("id","codigo","descripcion").order_by("codigo"))
+    return JsonResponse(context,safe=False)

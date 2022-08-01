@@ -19,7 +19,10 @@
     </div>
     <div class="col-6">
       <div class="row">
-        <div class="col-6">
+        <div class="col-2">
+          <input type="text" id="id" class="form-control" placeholder="Id" readonly>
+        </div>
+        <div class="col-4">
           <input type="text" id="codigo" class="form-control" placeholder="Código">
         </div>
         <div class="col-6">
@@ -30,8 +33,10 @@
       <div class="row">
         <div class="col">
           <button type="button" id="add-row" class="btn btn-warning">Agregar</button>
-          <button type="button" class="btn btn-info">Cancelar</button>
+          <button type="button" class="btn btn-info" id="btnCancel">Cancelar</button>
           <button type="button" class="btn btn-danger" id="btnSave">Guardar</button>
+          <button type="button" class="btn btn-default" id="btnReload">Cargar</button>
+          <button type="button" class="btn btn-success" id="btnEdit">Editar</button>
         </div>
       </div>
     </div>
@@ -42,12 +47,17 @@
 {% block js%}
 <script>
   $(document).ready(function(){
-
+    recargar()
   })
   $("#add-row").click(function(){
     var codigo = $("#codigo").val();
     var desc   = $("#descripcion").val();
-    var html = `<tr><td></td><td>${codigo}</td><td>${desc}</td><td></td></tr>`
+    var html = `<tr><td></td><td>${codigo}</td><td>${desc}</td><td>
+      <button class='btn btn-danger btn-sm btn-delete' 
+      >D</button>
+      <button class='btn btn-success btn-sm' 
+      >E</button>
+      </td></tr>`
     // console.log(html)
     if(codigo==""){
       alert("Código Requerido")
@@ -60,6 +70,7 @@
       return
     }
     $("table tbody").append(html)
+    limpiar()
   })
 
   $("#btnSave").click(function(){
@@ -87,10 +98,119 @@
         },
         complete: function(xhr,status){
           console.log("FINALIZADO")
+          recargar()
         }
       })
     })
   })
 
+  function recargar(){
+    $.ajax({
+        headers: {'X-CSRFToken': "{{csrf_token}}"},
+        url:"{% url 'app:reload'%}",
+        type:"GEST",
+        success: function(r){
+          console.log(r)
+          datos = r.datos;
+          console.log(datos)
+
+          $("table > tbody").empty()
+          var tabla = $("table")
+
+          var rows = $.map(datos,function(value,index){
+            return `<tr>
+            <td>${value.id}</td><td>${value.codigo}</td>
+            <td>${value.descripcion}</td>
+            <td><button class='btn btn-danger btn-sm btn-delete'
+              onClick="borrar(${value.id})"
+              >D</button>
+              <button class='btn btn-success btn-sm' 
+              onClick="paraEditar(${value.id},'${value.codigo}','${value.descripcion}')"
+              >E</button>
+              </td>
+            </tr>`
+          })
+          $("table > tbody").html(rows.join(''))
+        },
+        error: function(jqXHR,textStatus,error){
+          console.log(error)
+        },
+        complete: function(xhr,status){
+          console.log("FINALIZADO")
+        }
+      })
+  }
+
+  $("#btnReload").click(function(e){
+    recargar()
+  })
+
+  function borrar(id){
+    var url = `delete/${id}`
+
+    $.ajax ({
+        url : url,
+        headers: {'X-CSRFToken': "{{csrf_token}}"},
+        type: "POST",
+        success: function(r){
+          alert("Borrado")
+        },
+        error: function(jqXHR,textStatus,error)
+        {
+          console.log(error)
+        },
+        complete: function(xhr,status){
+          console.log("Finalizada")
+          recargar()
+        }
+      })
+  }
+
+  function limpiar(){
+    $("#codigo").val("")
+    $("#descripcion").val("")
+    $("#id").val("")
+    $("#codigo").focus()
+  }
+
+  function paraEditar(id,cod,desc)
+  {
+    limpiar()
+    $("#id").val(id)
+    $("#codigo").val(cod)
+    $("#descripcion").val(desc)
+  }
+
+  $("#btnEdit").click(function(e){
+    var cod = $("#codigo").val()
+    var des = $("#descripcion").val()
+    var id  = $("#id").val()
+
+    var url = `edit/${id}`
+    var data = {"codigo":cod,"descripcion":des}
+
+    $.ajax ({
+        url : url,
+        headers: {'X-CSRFToken': "{{csrf_token}}"},
+        type: "POST",
+        data: data,
+        success: function(r){
+          alert("Editado")
+        },
+        error: function(jqXHR,textStatus,error)
+        {
+          console.log(error)
+        },
+        complete: function(xhr,status){
+          console.log("Finalizada")
+          limpiar()
+          recargar()
+        }
+      })
+
+  })
+  $("#btnCancel").click(function(e){
+    limpiar();
+  })
 </script>
 {% endblock%}
