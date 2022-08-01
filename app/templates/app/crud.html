@@ -37,3 +37,19 @@
   </div>
 </div>
 {% endblock%}
+
+{% block js%}
+<script>
+  $(document).ready(function(){
+
+  })
+  $("#add-row").click(function(){
+    var codigo = $("#codigo").val();
+    var desc   = $("#descripcion").val();
+    var html = `<tr><td></td><td>${codigo}</td><td>${desc}</td><td></td></tr>`
+    // console.log(html)
+    $("table tbody").append(html)
+  })
+
+</script>
+{% endblock%}
