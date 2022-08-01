@@ -68,8 +68,27 @@
       var codigo = self.find("td:eq(1)").text().trim()
       var desc = self.find("td:eq(2)").text().trim()
       var result = codigo + " " + desc
-      console.log(self)
-      alert(result)
+      // console.log(self)
+      
+      // var data = {"codigo":codigo,"desc":desc,"csrfmiddlewaretoken" : "{{csrf_token}}"}
+      var data = {"codigo":codigo,"desc":desc}
+      console.log(data)
+
+      $.ajax({
+        headers: {'X-CSRFToken': "{{csrf_token}}"},
+        url:"{% url 'app:update1'%}",
+        data:data,
+        type:"POST",
+        success: function(r){
+
+        },
+        error: function(jqXHR,textStatus,error){
+          console.log(error)
+        },
+        complete: function(xhr,status){
+          console.log("FINALIZADO")
+        }
+      })
     })
   })
 

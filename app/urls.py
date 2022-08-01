@@ -8,4 +8,5 @@ urlpatterns = [
     path('new',ModeloNew.as_view(),name="new"),
     path('edit/<int:pk>',ModeloEdit.as_view(),name="edit"), 
     path('crud',Crud.as_view(),name="crud"),
+    path('crud/update',update1,name="update1"),
 ]

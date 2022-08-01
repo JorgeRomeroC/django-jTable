@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,HttpResponse
 from django.views import generic
 from django.urls import reverse_lazy
 
@@ -44,3 +44,23 @@ class ModeloDel(generic.DeleteView):
 
 class Crud(generic.TemplateView):
     template_name = "app/crud.html"
+
+
+def update1(request):
+    if request.POST:
+        c = request.POST.get("codigo")
+        d = request.POST.get("desc")
+
+        print(c,d)
+        o = Modelo.objects.filter(codigo=c).first()
+        if o:
+            o.descripcion = d
+        else:
+            o = Modelo(
+                codigo = c,
+                descripcion = d
+            )
+        o.save()
+
+        return HttpResponse("OK")
+    return HttpResponse("Método No Permitido")
