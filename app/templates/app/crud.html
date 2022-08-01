@@ -31,6 +31,7 @@
         <div class="col">
           <button type="button" id="add-row" class="btn btn-warning">Agregar</button>
           <button type="button" class="btn btn-info">Cancelar</button>
+          <button type="button" class="btn btn-danger" id="btnSave">Guardar</button>
         </div>
       </div>
     </div>
@@ -59,6 +60,17 @@
       return
     }
     $("table tbody").append(html)
+  })
+
+  $("#btnSave").click(function(){
+    $("table tbody>tr").each(function (){
+      var self = $(this)
+      var codigo = self.find("td:eq(1)").text().trim()
+      var desc = self.find("td:eq(2)").text().trim()
+      var result = codigo + " " + desc
+      console.log(self)
+      alert(result)
+    })
   })
 
 </script>
