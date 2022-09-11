@@ -10,16 +10,16 @@ var params = null;  		//Parameters
 var colsEdi =null;
 var newColHtml = '<div class="btn-group pull-right">'+
 '<button id="bEdit" type="button" class="btn btn-sm btn-default" onclick="butRowEdit(this);">' +
-'<span class="glyphicon glyphicon-pencil" > </span>'+
+'<i class="bi bi-pencil"></i>'+
 '</button>'+
 '<button id="bElim" type="button" class="btn btn-sm btn-default" onclick="butRowDelete(this);">' +
-'<span class="glyphicon glyphicon-trash" > </span>'+
+'<i class="bi bi-trash"></i>'+
 '</button>'+
 '<button id="bAcep" type="button" class="btn btn-sm btn-default" style="display:none;" onclick="butRowAcep(this);">' + 
-'<span class="glyphicon glyphicon-ok" > </span>'+
+'<i class="bi bi-check-circle"></i>'+
 '</button>'+
 '<button id="bCanc" type="button" class="btn btn-sm btn-default" style="display:none;" onclick="butRowCancel(this);">' + 
-'<span class="glyphicon glyphicon-remove" > </span>'+
+'<i class="bi bi-x-square"></i>'+
 '</button>'+
   '</div>';
   //Case NOT Bootstrap
