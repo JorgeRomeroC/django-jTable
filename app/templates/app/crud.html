@@ -37,6 +37,7 @@
           <button type="button" class="btn btn-danger" id="btnSave">Guardar</button>
           <button type="button" class="btn btn-default" id="btnReload">Cargar</button>
           <button type="button" class="btn btn-success" id="btnEdit">Editar</button>
+          <button type="button" class="btn btn-primary" id="btnSaveAll">Guardar Todo</button>
         </div>
       </div>
     </div>
@@ -231,6 +232,42 @@
   })
   $("#btnCancel").click(function(e){
     limpiar();
+  })
+
+  $("#btnSaveAll").click(function(){
+    var datos = []
+
+    $("table tbody>tr").each(function (){
+      var self = $(this)
+      var id = self.find("td:eq(0)").text().trim()
+      var codigo = self.find("td:eq(1)").text().trim()
+      var desc = self.find("td:eq(2)").text().trim()
+      var result = codigo + " " + desc
+      // console.log(self)
+      
+      // var data = {"codigo":codigo,"desc":desc,"csrfmiddlewaretoken" : "{{csrf_token}}"}
+      var data = JSON.stringify({"codigo":codigo,"desc":desc, "id": id})
+      datos.push(data)
+    })
+    console.log(datos)
+
+    $.ajax({
+      headers: {'X-CSRFToken': "{{csrf_token}}"},
+      url:"{% url 'app:update2'%}",
+      data: {'datos[]':datos},
+      type:"POST",
+      success: function(r){
+        mensaje("Guardado Satisfatoriamente")
+      },
+      error: function(jqXHR,textStatus,error){
+        console.log(error)
+      },
+      complete: function(xhr,status){
+        console.log("FINALIZADO")
+        recargar()
+      }
+    })
+
   })
 </script>
 {% endblock%}

@@ -1,3 +1,4 @@
+import json
 from django.http import JsonResponse
 from django.shortcuts import render,HttpResponse
 from django.views import generic
@@ -72,3 +73,27 @@ def reload(request):
     registros = Modelo.objects.all()
     context["datos"] = list(registros.values("id","codigo","descripcion").order_by("codigo"))
     return JsonResponse(context,safe=False)
+
+
+def update2(request):
+    if request.method == "POST":
+        datos = request.POST.getlist("datos[]")
+        # print(datos)
+
+        for i in datos:
+            r = json.loads(i)
+            print(r)
+            c = r["codigo"]
+            d = r["desc"]
+
+            o = Modelo.objects.filter(codigo=c).first()
+            if o:
+                o.descripcion = d
+            else:
+                o = Modelo(
+                    codigo = c,
+                    descripcion = d
+                )
+            o.save()
+        return HttpResponse("OK")
+    return HttpResponse("Método NO Permitido")
