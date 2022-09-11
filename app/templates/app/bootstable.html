@@ -1,0 +1,80 @@
+{% extends 'bases/index.html' %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-6">
+      <table class="table table-hover" id="editableTable">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Código</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    
+    </div>
+    <div class="col-6">
+      <div class="row">
+        <div class="col">
+          <button type="button" class="btn btn-info" id="btnReload">Cargar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock%}
+
+{% block js%}
+<script>
+  $(document).ready(function(){
+    recargar()
+  })
+
+  function recargar(){
+    $.ajax({
+        headers: {'X-CSRFToken': "{{csrf_token}}"},
+        url:"{% url 'app:reload'%}",
+        type:"GEST",
+        success: function(r){
+          console.log(r)
+          datos = r.datos;
+          console.log(datos)
+
+          $("table > tbody").empty()
+          var tabla = $("table")
+
+          var rows = $.map(datos,function(value,index){
+            return `<tr>
+            <td>${value.id}</td><td>${value.codigo}</td>
+            <td>${value.descripcion}</td>
+            <td><button class='btn btn-danger btn-sm btn-delete'
+              onClick="borrar(${value.id})"
+              >D</button>
+              <button class='btn btn-success btn-sm' 
+              onClick="paraEditar(${value.id},'${value.codigo}','${value.descripcion}')"
+              >E</button>
+              <button class='btn btn-success btn-sm' 
+              onClick="paraEditarModal(${value.id},'${value.codigo}','${value.descripcion}')"
+              >E2</button>
+              </td>
+            </tr>`
+          })
+          $("table > tbody").html(rows.join(''))
+        },
+        error: function(jqXHR,textStatus,error){
+          console.log(error)
+        },
+        complete: function(xhr,status){
+          console.log("FINALIZADO")
+        }
+      })
+  }
+
+</script>
+{% endblock%}

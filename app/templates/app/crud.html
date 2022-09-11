@@ -40,6 +40,46 @@
           <button type="button" class="btn btn-primary" id="btnSaveAll">Guardar Todo</button>
         </div>
       </div>
+      <div class="row">
+        <div class="col">
+          <button type="button" class="btn btn-primary" id="btnNewModal">Nuevo</button>
+        </div>
+    </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modal_edit_new" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" 
+   data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal_titulo">Agregar/Editar Registro</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="idModal">Id</label>
+              <input type="text" id="idModal" class="form-control" placeholder="Id" readonly>
+            </div>
+            <div class="form-group">
+              <label for="codigoModal">Código</label>
+              <input type="text" id="codigoModal" class="form-control" placeholder="Código">
+            </div>
+            <div class="form-group">
+              <label for="descripcionModal">Descripción</label>
+              <input type="text" id="descripcionModal" class="form-control" placeholder="Descripción">
+            </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="btnSaveModal">Guardar</button>
+      </div>
     </div>
   </div>
 </div>
@@ -130,6 +170,9 @@
               <button class='btn btn-success btn-sm' 
               onClick="paraEditar(${value.id},'${value.codigo}','${value.descripcion}')"
               >E</button>
+              <button class='btn btn-success btn-sm' 
+              onClick="paraEditarModal(${value.id},'${value.codigo}','${value.descripcion}')"
+              >E2</button>
               </td>
             </tr>`
           })
@@ -269,5 +312,57 @@
     })
 
   })
+
+  function abrirModal(){
+    $("#modal_edit_new").modal('show')
+  }
+  function cerrarModal(){
+    $("#modal_edit_new").modal('hide')
+  }
+
+  $("#btnNewModal").click(function(e){
+    $("#idModal").val("")
+    $("#codigoModal").val("")
+    $("#descripcionModal").val("")
+    $("#codigoModal").focus()
+
+    abrirModal()
+  })
+
+  function saveModal(codigo,desc){
+    var data = {"codigo":codigo,"desc":desc}
+
+    $.ajax({
+      headers: {'X-CSRFToken': "{{csrf_token}}"},
+      url:"{% url 'app:update1'%}",
+      data:data,
+      type:"POST",
+      success: function(r){
+        mensaje("Guardado Satisfatoriamente")
+      },
+      error: function(jqXHR,textStatus,error){
+        console.log(error)
+      },
+      complete: function(xhr,status){
+        console.log("FINALIZADO")
+        recargar()
+        cerrarModal()
+      }
+    })
+  }
+  $("#btnSaveModal").click(function(e){
+    var c = $("#codigoModal").val()
+    var d = $("#descripcionModal").val()
+
+    saveModal(c,d)
+  })
+  function paraEditarModal(id,cod,desc){
+    $("#idModal").val(id)
+    $("#codigoModal").val(cod)
+    $("#descripcionModal").val(desc)
+
+    abrirModal();
+  }
+  
 </script>
 {% endblock%}

@@ -97,3 +97,6 @@ def update2(request):
             o.save()
         return HttpResponse("OK")
     return HttpResponse("Método NO Permitido")
+
+class BootsTable(generic.TemplateView):
+    template_name = "app/bootstable.html"

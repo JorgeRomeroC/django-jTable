@@ -13,4 +13,6 @@ urlpatterns = [
     path('delete/<int:pk>',ModeloDel.as_view(),name="delete"), 
 
     path('crud/update2',update2,name="update2"),
+
+    path('bootstable',BootsTable.as_view(),name="bootstable"),
 ]
