@@ -47,7 +47,19 @@
       </div>
 
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+      <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+      <script>
+        function mensaje(msg,titulo="",tipo="success")
+        {
+          Swal.fire({
+            icon: tipo,
+            title: titulo,
+            text: msg,
+            confirmButtonText: "OK"
+          })
+        }
+      </script>
       {% block js%}{% endblock%}
 </body>
 </html>
