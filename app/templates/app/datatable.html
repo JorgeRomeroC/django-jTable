@@ -7,7 +7,7 @@
         <th scope="col">Id</th>
         <th scope="col">Código</th>
         <th scope="col">Descripción</th>
-        <th scope="col">Acción</th>
+        <!-- <th scope="col">Acción</th> -->
       </tr>
     </thead>
     <tbody>
@@ -18,7 +18,18 @@
 {% block js%}
 <script>
   $(document).ready( function () {
-    $('#tbl').DataTable();
+    $('#tbl').DataTable({
+      ajax: {
+        url: "{% url 'app:reload'%}",
+        dataSrc: "datos"
+      },
+      columns: [
+        {data: "id"},
+        {data: "codigo"},
+        {data: "descripcion"}
+      ],
+      rowId: "id",
+    });
 } );
 </script>
 {% endblock %}
