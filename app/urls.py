@@ -15,4 +15,6 @@ urlpatterns = [
     path('crud/update2',update2,name="update2"),
 
     path('bootstable',BootsTable.as_view(),name="bootstable"),
+
+    path('datatable',DataTable.as_view(),name="datatable"),
 ]

@@ -100,3 +100,7 @@ def update2(request):
 
 class BootsTable(generic.TemplateView):
     template_name = "app/bootstable.html"
+
+
+class DataTable(generic.TemplateView):
+    template_name = "app/datatable.html"
