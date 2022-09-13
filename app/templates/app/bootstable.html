@@ -10,7 +10,7 @@
             <th scope="col">Id</th>
             <th scope="col">Código</th>
             <th scope="col">Descripción</th>
-            <th scope="col">Acción</th>
+            <!-- <th scope="col">Acción</th> -->
           </tr>
         </thead>
         <tbody>
@@ -22,7 +22,43 @@
       <div class="row">
         <div class="col">
           <button type="button" class="btn btn-info" id="btnReload" onclick="recargar();">Cargar</button>
+          <button type="button" id="btnAdd" class="btn btn-warning">Nuevo</button>
+          <button type="button" class="btn btn-primary" id="btnNewModal">Nuevo (Modal)</button>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modal_edit_new" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal_titulo">Agregar/Editar Registro</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="idModal">Id</label>
+              <input type="text" id="idModal" class="form-control" placeholder="Id" readonly>
+            </div>
+            <div class="form-group">
+              <label for="codigoModal">Código</label>
+              <input type="text" id="codigoModal" class="form-control" placeholder="Código">
+            </div>
+            <div class="form-group">
+              <label for="descripcionModal">Descripción</label>
+              <input type="text" id="descripcionModal" class="form-control" placeholder="Descripción">
+            </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="btnSaveModal">Guardar</button>
       </div>
     </div>
   </div>
@@ -64,14 +100,25 @@
             columnsEd: "1,2",
             onEdit: function(cEd){
               console.log(cEd)
-              var i = cEd[0].childNodes[1].innerHTML
-              var c = cEd[0].childNodes[2].innerHTML
-              var d = cEd[0].childNodes[4].innerHTML
-              // alert(c)
-              // alert(d)
+              if(cEd[0].childNodes[0].innerHTML==undefined){
+                var i = cEd[0].childNodes[1].innerHTML
+                var c = cEd[0].childNodes[2].innerHTML
+                var d = cEd[0].childNodes[4].innerHTML
+                // alert(c)
+                // alert(d)
 
-              var url = `edit/${i}`
-              var data = {"codigo":c,"descripcion":d}
+                var url = `edit/${i}`
+                var data = {"codigo":c,"descripcion":d}
+              }else{
+                var i = cEd[0].childNodes[0].innerHTML
+                var c = cEd[0].childNodes[1].innerHTML
+                var d = cEd[0].childNodes[2].innerHTML
+
+                var url = `{% url 'app:update1'%}`
+                // var data = {"codigo":c,"descripcion":d}
+                var data = {"codigo":c,"desc":d}
+              }
+              
 
               $.ajax ({
                   url : url,
@@ -88,7 +135,7 @@
                   },
                   complete: function(xhr,status){
                     console.log("Finalizada")
-                    limpiar()
+                    // limpiar()
                     recargar()
                   }
                 })
@@ -99,7 +146,8 @@
             },
             onDelete: function(){
               recargar()
-            }
+            },
+            $addButton: $("#btnAdd")
           })
         },
         error: function(jqXHR,textStatus,error){
@@ -147,6 +195,52 @@
     }
   })
 
+  }
+
+  function abrirModal(){
+    $("#modal_edit_new").modal('show');
+  }
+
+  function cerrarModal(){
+    $("#modal_edit_new").modal('hide');
+  }
+
+  $("#btnNewModal").click(function(e){
+    $("#idModal").val("")
+    $("#codigoModal").val("")
+    $("#descripcionModal").val("")
+    $("#codigoModal").focus()
+
+    abrirModal();
+  });
+
+  $("#btnSaveModal").click(function(e){
+    var c = $("#codigoModal").val()
+    var d = $("#descripcionModal").val()
+
+    saveModal(c,d)
+  })
+
+  function saveModal(codigo,desc){
+    var data = {"codigo":codigo,"desc":desc}
+
+    $.ajax({
+      headers: {'X-CSRFToken': "{{csrf_token}}"},
+      url:"{% url 'app:update1'%}",
+      data:data,
+      type:"POST",
+      success: function(r){
+        mensaje("Guardado Satisfatoriamente")
+      },
+      error: function(jqXHR,textStatus,error){
+        console.log(error)
+      },
+      complete: function(xhr,status){
+        console.log("FINALIZADO")
+        recargar()
+        cerrarModal()
+      }
+    })
   }
 </script>
 {% endblock%}
