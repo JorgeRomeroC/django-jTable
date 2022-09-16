@@ -109,7 +109,9 @@ def datatable(request):
     contexto = {}
     contexto["data"] = []
 
+
     if request.method == "POST":
+        error = None
         r = request.POST
         print(r)
         # print(request.POST)
@@ -127,6 +129,8 @@ def datatable(request):
             o = Modelo.objects.filter(id=id)
             if o:
                 o.delete()
+            else:
+                error = "Imposible Eliminar"
         else:
             cod = r[list(r)[0]]
             des   = r[list(r)[1]]
@@ -139,10 +143,14 @@ def datatable(request):
                         codigo = cod,
                         descripcion = des
                     )
+                else:
+                    error = "Código No Existe, imposible Editar"
             else:
                 o.codigo = cod
                 o.descripcion = des
             o.save()
+            if not o:
+                error = "No se ha podido guardar ni editar"
             id = o.id                    
 
             datos = []
@@ -154,6 +162,8 @@ def datatable(request):
 
             print(datos)
             contexto["data"] = datos
+            if error:
+                contexto["error"] = error
         print(contexto)
         
     return JsonResponse(contexto, safe=False)
