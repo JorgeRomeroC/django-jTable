@@ -21,6 +21,7 @@
     var editor = new $.fn.dataTable.Editor( {
         ajax:  '/api/staff',
         table: '#tbl',
+        idSrc : 'id',
         fields: [
             { label: 'Código', name: 'codigo' },
             { label: 'Descripción',  name: 'descripcion'  },
