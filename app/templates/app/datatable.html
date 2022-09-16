@@ -66,10 +66,15 @@
       select:true,
       dom: 'Bfrtip',
       buttons: [
-            { extend: "create", editor: editor },
-            { extend: "edit",   editor: editor },
-            { extend: "remove", editor: editor },
-        ]
+        { extend: "create", editor: editor,text:'<i class="bi bi-plus-square-dotted">',className: 'text-warning' },
+        { extend: "edit",   editor: editor,text:'<i class="bi bi-pencil-square"></i>',className: 'text-success' },
+        { extend: "remove", editor: editor,text:'<i class="bi bi-trash3"></i>',className: 'text-danger'
+          ,formMessage: function(e,dt){
+            var rows = dt.rows(e.modifier()).data().pluck("descripcion")
+            return "¿Seguro que desea borrar el registro <b> "+ rows.join('') +"</b>?"
+            }
+          }
+        ],
     });
 
     //Botón Editar 
