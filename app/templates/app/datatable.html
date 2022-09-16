@@ -18,6 +18,16 @@
 {% block js%}
 <script>
   $(document).ready( function () {
+    var editor = new $.fn.dataTable.Editor( {
+        ajax:  '/api/staff',
+        table: '#tbl',
+        fields: [
+            { label: 'Código', name: 'codigo' },
+            { label: 'Descripción',  name: 'descripcion'  },
+            // etc
+        ]
+    });
+
     $('#tbl').DataTable({
       ajax: {
         url: "{% url 'app:reload'%}",
@@ -29,6 +39,13 @@
         {data: "descripcion"}
       ],
       rowId: "id",
+      select:true,
+      dom: 'Bfrtip',
+      buttons: [
+            { extend: "create", editor: editor },
+            { extend: "edit",   editor: editor },
+            { extend: "remove", editor: editor }
+        ]
     });
 } );
 </script>
