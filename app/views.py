@@ -104,3 +104,56 @@ class BootsTable(generic.TemplateView):
 
 class DataTable(generic.TemplateView):
     template_name = "app/datatable.html"
+
+def datatable(request):
+    contexto = {}
+    contexto["data"] = []
+
+    if request.method == "POST":
+        r = request.POST
+        print(r)
+        # print(request.POST)
+        print(r['action'])
+        # print(list(r)[0])
+        # print(r[list(r)[0]])
+        # print(r[list(r)[1]])
+        # print(r[list(r)[2]])
+        
+        # datos.append({"id":"1","codigo":"codigo","descripcion":"descripcion"})
+        accion = r['action']
+        if accion=='remove':
+            id = r[list(r)[0]]
+
+            o = Modelo.objects.filter(id=id)
+            if o:
+                o.delete()
+        else:
+            cod = r[list(r)[0]]
+            des   = r[list(r)[1]]
+            print(cod,des)
+
+            o = Modelo.objects.filter(codigo=cod).first()
+            if not o :
+                if accion=="create":
+                    o = Modelo(
+                        codigo = cod,
+                        descripcion = des
+                    )
+            else:
+                o.codigo = cod
+                o.descripcion = des
+            o.save()
+            id = o.id                    
+
+            datos = []
+            datos.append({
+                "id":o.id,
+                "codigo":o.codigo,
+                "descripcion":o.descripcion
+                })
+
+            print(datos)
+            contexto["data"] = datos
+        print(contexto)
+        
+    return JsonResponse(contexto, safe=False)

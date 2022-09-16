@@ -17,4 +17,5 @@ urlpatterns = [
     path('bootstable',BootsTable.as_view(),name="bootstable"),
 
     path('datatable',DataTable.as_view(),name="datatable"),
+    path('datatable/crud',datatable,name="datatable2"),
 ]

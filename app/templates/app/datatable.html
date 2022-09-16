@@ -19,7 +19,11 @@
 <script>
   $(document).ready( function () {
     var editor = new $.fn.dataTable.Editor( {
-        ajax:  '/api/staff',
+        ajax:  {
+          url: '{% url "app:datatable2"%}',
+          type: 'POST',
+          headers: {'X-CSRFToken': '{{ csrf_token }}'},
+        },
         table: '#tbl',
         idSrc : 'id',
         fields: [
