@@ -1,6 +1,10 @@
 {% extends 'bases/index.html' %}
 
 {% block content %}
+<button type="button" id="btnNew" class="btn btn-sm btn-warning">
+  <i class="bi bi-plus-square-dotted"></i>Nuevo Registro
+</button>
+<hr>
 <table class="table table-hover" id="tbl">
     <thead>
       <tr>
@@ -8,6 +12,7 @@
         <th scope="col">Código</th>
         <th scope="col">Descripción</th>
         <!-- <th scope="col">Acción</th> -->
+        <th></th><th></th>
       </tr>
     </thead>
     <tbody>
@@ -41,7 +46,21 @@
       columns: [
         {data: "id"},
         {data: "codigo"},
-        {data: "descripcion"}
+        {data: "descripcion"},
+        {
+          data: null,
+          className: "dt-center editor-edit text-success",
+          defaultContent: '<i class="bi bi-pencil-square"></i>',
+          orderable: false
+        },
+        {
+          data: null,
+          className: "dt-center editor-delete text-danger",
+          defaultContent: '<i class="bi bi-trash3"></i>',
+          orderable: false
+        }
+
+
       ],
       rowId: "id",
       select:true,
@@ -49,9 +68,41 @@
       buttons: [
             { extend: "create", editor: editor },
             { extend: "edit",   editor: editor },
-            { extend: "remove", editor: editor }
+            { extend: "remove", editor: editor },
         ]
     });
+
+    //Botón Editar 
+    $("#tbl").on("click",'td.editor-edit',function(e){
+      e.preventDefault()
+
+      editor.edit($(this).closest('tr'), {
+        title: 'Editar Registro',
+        buttons: 'Actualizar'
+      })
+    })
+
+    //Botón Borrar
+    $('#tbl').on('click', 'td.editor-delete', function (e) {
+        e.preventDefault();
+ 
+        editor.remove( $(this).closest('tr'), {
+            title: 'Borrar Registro',
+            message: '¿Seguro Deseas Borrar Registro?',
+            buttons: 'Si, Borrar!'
+        } );
+    } );
+
+     //Botón Nuevo
+     $('#btnNew').on('click', function (e) {
+        e.preventDefault();
+ 
+        editor.create( {
+            title: 'Nuevo Registro',
+            buttons: 'Agregar'
+        } );
+    } );
+
 } );
 </script>
 {% endblock %}
