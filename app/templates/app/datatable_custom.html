@@ -114,6 +114,18 @@
               mensaje("Dee Seleccionar una fila","","warning")
             }
           }
+        },
+        {
+          text : '<i class="bi bi-trash3"></i>', className: 'text-danger',
+          action: function(e,dt,node,config){
+            var row = dt.rows({selected:true}).data()
+            if(row.length==1){
+              var i = row[0].id
+              borrar(i)
+            }else{
+              mensaje("Dee Seleccionar una fila para Borrar","","warning")
+            }
+          }
         }
       ]
     });
