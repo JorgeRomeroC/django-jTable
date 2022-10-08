@@ -167,3 +167,7 @@ def datatable(request):
         print(contexto)
         
     return JsonResponse(contexto, safe=False)
+
+
+class DataTableCustom(generic.TemplateView):
+    template_name = "app/datatable_custom.html"

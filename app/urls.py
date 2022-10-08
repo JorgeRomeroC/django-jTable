@@ -18,4 +18,6 @@ urlpatterns = [
 
     path('datatable',DataTable.as_view(),name="datatable"),
     path('datatable/crud',datatable,name="datatable2"),
+
+    path('datatable-custom',DataTableCustom.as_view(),name='datatable_custom'),
 ]
