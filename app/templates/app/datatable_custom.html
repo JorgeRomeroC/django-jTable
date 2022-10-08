@@ -1,25 +1,62 @@
 {% extends 'bases/index.html' %}
 
 {% block content %}
-<table class="table table-hover">
+<table class="table table-hover" id="tbl">
     <thead>
       <tr>
         <th scope="col">Id</th>
         <th scope="col">Código</th>
         <th scope="col">Descripción</th>
+        <th></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
     
     </tbody>
   </table>
+
+<!-- Modal -->
+<div class="modal fade" id="modal_edit_new" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" 
+   data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal_titulo">Agregar/Editar Registro</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="idModal">Id</label>
+              <input type="text" id="idModal" class="form-control" placeholder="Id" readonly>
+            </div>
+            <div class="form-group">
+              <label for="codigoModal">Código</label>
+              <input type="text" id="codigoModal" class="form-control" placeholder="Código">
+            </div>
+            <div class="form-group">
+              <label for="descripcionModal">Descripción</label>
+              <input type="text" id="descripcionModal" class="form-control" placeholder="Descripción">
+            </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="btnSaveModal">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock%}
 
 {% block js%}
 <script>
   var $tbl
   $(document).ready( function () {
-    $tbl = $('table').DataTable({
+    $tbl = $('#tbl').DataTable({
       ajax: {
         url:"{% url 'app:reload'%}",
         dataSrc: 'datos'
@@ -28,8 +65,73 @@
         {data: "id"},
         {data: "codigo"},
         {data: "descripcion"},
+        {
+          data: null,
+          className: "dt-center editor-edit text-success",
+          defaultContent: '<i class="bi bi-pencil-square"></i>',
+          orderable: false
+        },
+        {
+          data: null,
+          className: "dt-center editor-delete text-danger",
+          defaultContent: '<i class="bi bi-trash3"></i>',
+          orderable: false
+        }
       ]
     });
 } );
+
+//Botón Editar
+$("#tbl").on("click","td.editor-edit",function(e){
+  e.preventDefault()
+  var row = $tbl.rows(this).data()
+  // console.log(row)
+  var i = row.pluck("id").join('')
+  var d = row.pluck("descripcion").join('')
+  var c = row.pluck("codigo").join('')
+  console.log(i,d,c)
+
+  $("#idModal").val(i)
+  $("#codigoModal").val(c)
+  $("#descripcionModal").val(d)
+  
+  abrirModal()
+
+})
+function abrirModal(){
+    $("#modal_edit_new").modal('show')
+  }
+  function cerrarModal(){
+    $("#modal_edit_new").modal('hide')
+  }
+
+  function saveModal(codigo,desc){
+    var data = {"codigo":codigo,"desc":desc}
+
+    $.ajax({
+      headers: {'X-CSRFToken': "{{csrf_token}}"},
+      url:"{% url 'app:update1'%}",
+      data:data,
+      type:"POST",
+      success: function(r){
+        mensaje("Guardado Satisfatoriamente")
+        cerrarModal()
+      },
+      error: function(jqXHR,textStatus,error){
+        console.log(error)
+      },
+      complete: function(xhr,status){
+        console.log("FINALIZADO")
+        cerrarModal()
+        $tbl.ajax.reload()
+      }
+    })
+  }
+  $("#btnSaveModal").click(function(e){
+    var c = $("#codigoModal").val()
+    var d = $("#descripcionModal").val()
+
+    saveModal(c,d)
+  })
 </script>
 {% endblock %}
