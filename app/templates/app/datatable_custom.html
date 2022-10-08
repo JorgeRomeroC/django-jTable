@@ -78,6 +78,7 @@
           orderable: false
         }
       ],
+      select: true,
       dom: 'Bfrtip',
       buttons: [
         {
@@ -91,6 +92,29 @@
             abrirModal()
           }
         },
+        {
+          text : '<i class="bi bi-pencil-square"></i>', className: 'text-success',
+          action: function(e,dt,node,config){
+            var row = dt.rows({selected:true}).data()
+            // console.log(row)
+            if(row.length==1){
+              // console.log("Una fila")
+              // console.log(row[0].codigo)
+              var i = row[0].id
+              var d = row[0].descripcion
+              var c = row[0].codigo
+              console.log(i,d,c)
+
+              $("#idModal").val(i)
+              $("#codigoModal").val(c)
+              $("#descripcionModal").val(d)
+              
+              abrirModal()
+            }else{
+              mensaje("Dee Seleccionar una fila","","warning")
+            }
+          }
+        }
       ]
     });
 } );
