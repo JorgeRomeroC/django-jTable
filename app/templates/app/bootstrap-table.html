@@ -75,6 +75,10 @@ function botones(){
       text: 'Nuevo Registro',
       icon: 'bi bi-plus-square-dotted',
       event: function(){
+
+        $("#idModal").val("")
+        $("#codigoModal").val("")
+        $("#descripcionModal").val("")
         abrirModal()
       },
       attributes: {
@@ -105,6 +109,25 @@ function botones(){
       },
       attributes: {
         title: "Editar Registro"
+      }
+    },
+    btnDelete: {
+      text : "Borrar Registro",
+      icon : "bi bi-trash3",
+      event : function(){
+        var $table = $("#table")
+        var obj = $table.bootstrapTable("getSelections")
+        if(obj.length!=1){
+          mensaje("Debe Seleccionar una Fila para Eliminarla","Atención!","warning")
+          return
+        }
+
+        var i = obj[0].id
+        borrar(i)
+
+      },
+      attributes: {
+        title: "Borrar Registro"
       }
     }
   }
@@ -158,6 +181,44 @@ function abrirModal(){
 function recargar(){
   var $table = $("#table")
   $table.bootstrapTable("refresh")
+}
+
+function borrar(id){
+
+Swal.fire({
+  title: `¿Borrar ${id}?`,
+  icon: 'question',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Si, Borrar',
+  cancelButtonText: "No. No Borrar"
+}).then((result) => {
+  if (result.isConfirmed) {
+    var url = `delete/${id}`
+
+    $.ajax ({
+        url : url,
+        headers: {'X-CSRFToken': "{{csrf_token}}"},
+        type: "POST",
+        success: function(r){
+          // alert("Borrado")
+          mensaje("Borrado Satisfactoriamente","¡Atención!")
+        },
+        error: function(jqXHR,textStatus,error)
+        {
+          console.log(error)
+        },
+        complete: function(xhr,status){
+          console.log("Finalizada")
+          recargar()
+        }
+      })    
+  }else{
+    mensaje("No se borró nada")
+  }
+})
+
 }
 </script>
 {% endblock %}
