@@ -1,0 +1,134 @@
+{% extends 'bases/index.html' %}
+
+{% block content %}
+<table data-toggle="table"
+data-url="{% url 'app:reload2' %}"
+id="table"
+data-show-refresh="true"
+data-auto-refresh="true"
+data-pagination="true"
+data-show-columns="true"
+data-show-columns-toggle-all="true"
+data-search="true"
+data-show-fullscreen="true"
+data-buttons="botones"
+>
+    <thead>
+      <tr>
+        <th data-field="id">Id</th>
+        <th data-field="codigo">Código</th>
+        <th data-field="descripcion">Descripción</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+<!-- Modal -->
+<div class="modal fade" id="modal_edit_new" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" 
+   data-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal_titulo">Agregar/Editar Registro</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="idModal">Id</label>
+              <input type="text" id="idModal" class="form-control" placeholder="Id" readonly>
+            </div>
+            <div class="form-group">
+              <label for="codigoModal">Código</label>
+              <input type="text" id="codigoModal" class="form-control" placeholder="Código">
+            </div>
+            <div class="form-group">
+              <label for="descripcionModal">Descripción</label>
+              <input type="text" id="descripcionModal" class="form-control" placeholder="Descripción">
+            </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="btnSaveModal">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock%}
+
+{% block js%}
+<script>
+  $(document).ready( function () {
+    
+} );
+
+function botones(){
+  return {
+    btnNuevo : {
+      text: 'Nuevo Registro',
+      icon: 'bi bi-plus-square-dotted',
+      event: function(){
+        abrirModal()
+      },
+      attributes: {
+        title: "Nuevo Registro"
+      }
+    }
+  }
+}
+
+function abrirModal(){
+    $("#modal_edit_new").modal('show')
+  }
+  function cerrarModal(){
+    $("#modal_edit_new").modal('hide')
+  }
+
+  $("#btnNewModal").click(function(e){
+    $("#idModal").val("")
+    $("#codigoModal").val("")
+    $("#descripcionModal").val("")
+    $("#codigoModal").focus()
+
+    abrirModal()
+  })
+
+  function saveModal(codigo,desc){
+    var data = {"codigo":codigo,"desc":desc}
+
+    $.ajax({
+      headers: {'X-CSRFToken': "{{csrf_token}}"},
+      url:"{% url 'app:update1'%}",
+      data:data,
+      type:"POST",
+      success: function(r){
+        mensaje("Guardado Satisfatoriamente")
+      },
+      error: function(jqXHR,textStatus,error){
+        console.log(error)
+      },
+      complete: function(xhr,status){
+        console.log("FINALIZADO")
+        recargar()
+        cerrarModal()
+      }
+    })
+  }
+
+  $("#btnSaveModal").click(function(e){
+    var c = $("#codigoModal").val()
+    var d = $("#descripcionModal").val()
+
+    saveModal(c,d)
+  })
+
+function recargar(){
+  var $table = $("#table")
+  $table.bootstrapTable("refresh")
+}
+</script>
+{% endblock %}

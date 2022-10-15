@@ -171,3 +171,23 @@ def datatable(request):
 
 class DataTableCustom(generic.TemplateView):
     template_name = "app/datatable_custom.html"
+
+
+# class BoostrapTable(generic.ListView):
+#     permission_required = "app.view_modelo"
+#     model = Modelo
+#     template_name = "app/bootstrap-table.html"
+#     context_object_name = "obj"
+
+
+class BoostrapTable(generic.TemplateView):
+    template_name = "app/bootstrap-table.html"
+
+
+def reload2(request):
+    context = {}
+    registros = Modelo.objects.all()
+    context["total"] = registros.count()
+    context["totalNotFiltered"] = registros.count()
+    context["rows"] = list(registros.values("id","codigo","descripcion").order_by("codigo"))
+    return JsonResponse(context,safe=False)

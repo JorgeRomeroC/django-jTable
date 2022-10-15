@@ -20,4 +20,7 @@ urlpatterns = [
     path('datatable/crud',datatable,name="datatable2"),
 
     path('datatable-custom',DataTableCustom.as_view(),name='datatable_custom'),
+
+    path('bootstrap-table',BoostrapTable.as_view(),name="bootstrap_table"),
+    path('crud/reload2',reload2,name="reload2"),
 ]
