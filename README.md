@@ -1,6 +1,6 @@
-![Curso Despliegua Aplicaciones Django (y Flask) de Python en Varias Plataformas VPS](logo.png)
-# Curso Despliegua Aplicaciones Django (y Flask) de Python en Varias Plataformas VPS 🐍 
-##  🎖️ [Obténlo con hasta 50% Descuento Oficial en Udemy](https://www.udemy.com/course/despliegue-de-aplicaciones-django-en-varias-plataformas-vps/?referralCode=2FA7782A4B4B6B14A6E6)  🎖️
+![CRUD Dinámico de Tablas HTML hacia PostgreSQL con Django (De Python 🐍)](logo.png)
+# Curso CRUD Dinámico de Tablas HTML hacia PostgreSQL con Django (De Python 🐍)
+##  🎖️ [Obténlo con hasta 50% Descuento Oficial en Udemy](https://debsconsultores.blogspot.com/2022/10/elabora-crud-dinamico-desde-tabla-html.html)  🎖️
 
 ##### Código Fuente del Proyecto
 
@@ -8,13 +8,15 @@
 ##### Precio $9.99 en cualquier curso
 
 ## ☷ Cursos ofrecidos con su Descuento:
-
+- ☞ CRUD Dinámico de Tablas HTML hacia PostgreSQL con Django
+- ☞ Despliega Aplicaciones Django (y Flask) de Python en Varias Plataformas VPS
 - ☞ Sistema de Compra y Facturación con Django LTS
 - ☞ Elabora RestAPI con Django Rest FrameWork
 - ☞ Domina el ORM de Django
 - ☞ Desarrollo Web con Python usando Django (Para Principiantes)
 - ☞ Replicación de Datos con SymmetricDS
 - ☞ Experto FrontEnd con VUE y BackEnd con Django 
+- ☞ Construye Web API con ASP Net Core y VS Code
 - ☞ Desarrolla Aplicaciones en Capa con ADO NET
 - ☞ Entity FrameWork para principiantes
 
